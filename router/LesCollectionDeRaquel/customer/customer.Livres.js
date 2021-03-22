@@ -58,20 +58,10 @@ class CustomerLivre {
     });
   }
   static updateById(id, customerLivre, result) {
+    const {imagesUrl, titre, possede, collection} = customerLivre;
+    const possedeToBdd = possede ? 1 : 0;
     sql.query(
-        'UPDATE livre SET \
-        imagesUrl = ?, \
-        titre = ?, \
-        possede = ? \
-        collection = ?, \
-        WHERE livreId = ?',
-        [
-          customerLivre.imagesUrl,
-          customerLivre.titre,
-          customerLivre.possede,
-          customerLivre.collection,
-          customerLivre.livreId,
-        ],
+        `UPDATE livre SET imagesUrl = "${imagesUrl}", titre = "${titre}", possede = ${possedeToBdd}, collection = "${collection}" WHERE livreId = ${id}`,
         (err, res) => {
           if (err) {
             winston.error(err);

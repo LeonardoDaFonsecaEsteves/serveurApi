@@ -9,19 +9,23 @@ class CustomerCollection {
     this.collectionName = customerCollection.collectionName;
   }
   static create(newcollection, result) {
-    sql.query('INSERT INTO collection SET ?', newcollection, (err, res) => {
-      if (err) {
-        winston.error(err);
-        result(err, null);
-        return;
-      }
+    sql.query(
+        'INSERT IGNORE INTO collection SET ?',
+        newcollection,
+        (err, res) => {
+          if (err) {
+            winston.error(err);
+            result(err, null);
+            return;
+          }
 
-      winston.info('created collection: ', {
-        id: res.insertId,
-        ...newcollection,
-      });
-      result(null, {id: res.insertId, ...newcollection});
-    });
+          winston.info('created collection: ', {
+            id: res.insertId,
+            ...newcollection,
+          });
+          result(null, {id: res.insertId, ...newcollection});
+        },
+    );
   }
   static findById(collectionId, result) {
     sql.query(

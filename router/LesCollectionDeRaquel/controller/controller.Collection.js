@@ -9,9 +9,10 @@ exports.create = (req, res) => {
     });
   }
 
-  const {collectionName} = livre;
+  const {collectionName, collectionId} = req.body;
   // Create a CustomerCollections
   const customer = new CustomerCollection({
+    collectionId: collectionId,
     collectionName: collectionName,
   });
 

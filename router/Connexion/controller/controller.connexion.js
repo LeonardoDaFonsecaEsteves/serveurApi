@@ -36,11 +36,10 @@ exports.create = (req, res) => {
 exports.findOne = (req, res) => {
   CustomerConnexion.findByEmail(req.body, (err, data) => {
     const {email, mdp} = req.body;
+    console.log(req.body);
     if (err) {
       if (err.kind === 'not_found') {
-        res.status(404).send({
-          message: `Not found users with ${email}.`,
-        });
+        res.status(500).send(`Not found users with ${email}.`);
       } else {
         res.status(500).send({
           message: 'Error retrieving users with ' + req.body.email,
@@ -60,7 +59,7 @@ exports.findOne = (req, res) => {
               },
           );
           res.setHeader('Authorization', 'Bearer ' + token);
-          return res.status(200).json('auth_ok');
+          return res.status(200).json(token);
         } else {
           return res.status(403).json('wrong_credentials');
         }

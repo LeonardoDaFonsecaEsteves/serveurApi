@@ -8,9 +8,9 @@ exports.create = (req, res) => {
       message: 'Content can not be empty!',
     });
   }
-
-  const {collection, titre, possede} = livre;
-  let name = livre.titre;
+  const {collection, titre, possede} = req.body;
+  console.log(req.body);
+  let name = titre;
   name = name.replace(/[^A-Z0-9]+/gi, '-') + '.jpg';
   // Create a CustomerLivres
   const customer = new CustomerLivre({

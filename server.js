@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const https = require('https');
 const PORT = process.env.PORT_API;
-const cors = require('cors');
 const compression = require('compression');
 const routes = require('./router/router');
 const winston = require('./config/winston');
@@ -15,24 +14,24 @@ const fs = require('fs');
 const key = fs.readFileSync(path.join(__dirname, 'certificate', 'server.key'));
 const cert = fs.readFileSync(path.join(__dirname, 'certificate', 'server.cert'));
 
-const optionCors = {
-  origin: '*',
-  methods: 'GET,PUT,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-};
 app.use(morgan('combined', {stream: winston.stream}));
 app.use(compression());
-app.use(cors(optionCors));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+// CORS middleware
+const allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+};
+
+app.use(allowCrossDomain);
+
 app.use((req, _, next) => {
-  if (
-    !req.originalUrl.includes('images') ||
-        req.originalUrl.includes('static')
-  ) {
+  if (!req.originalUrl.includes('images')) {
     winston.info(`${req.ip} - ${req.method}  -  ${req.originalUrl}`);
   }
   next();
