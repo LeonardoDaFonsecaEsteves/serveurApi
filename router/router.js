@@ -1,9 +1,9 @@
-const LesCollectionsDeRaquelRoutes = require('./LesCollectionDeRaquel/index')
-const UploadImagesRoute = require('./UploadImages/index')
-const ConnexionRoute = require('./Connexion/index')
+const lesCollectionsDeRaquelRoutes = require('./LesCollectionDeRaquel/index');
+const uploadImagesRoute = require('./UploadImages/index');
+const connexionRoute = require('./Connexion/index');
 
 module.exports = (app) => {
-  ConnexionRoute(app)
-  LesCollectionsDeRaquelRoutes(app)
-  UploadImagesRoute(app)
-}
+  connexionRoute(app);
+  lesCollectionsDeRaquelRoutes(app);
+  uploadImagesRoute(app);
+};

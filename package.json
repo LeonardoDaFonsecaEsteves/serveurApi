@@ -5,11 +5,51 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "lint:fix": "eslint \"**/*.js\" --fix",
+    "lint": "eslint \"**/*.js\"",
+    "prettify": "prettier \"**/*.js\" --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git-precommit-checks && lint-staged "
+    }
+  },
+  "lint-staged": {
+    "*.(js)": [
+      "prettier --write",
+      "npm run lint:fix",
+      "git add"
+    ]
+  },
+  "git-precommit-checks": {
+    "rules": [
+      {
+        "filter": "\\.js$",
+        "nonBlocking": "true",
+        "message": "il y à des `console.log`",
+        "regex": "console\\.log"
+      },
+      {
+        "message": "il y à des conflies",
+        "regex": "/^[<>|=]{4,}/m"
+      },
+      {
+        "message": "il y à des DEV non terminer",
+        "nonBlocking": "true",
+        "regex": "(?:FIXME|TODO)"
+      }
+    ]
   },
   "author": "leonardo da fonseca esteves",
   "license": "ISC",
   "dependencies": {
+    "eslint": "^7.19.0",
+    "prettier": "^2.2.1",
+    "eslint-config-google": "^0.14.0",
+    "git-precommit-checks": "^3.0.6",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3",
     "app-root-path": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
