@@ -1,3 +1,14 @@
+# ignore env
+.env
+# ignore public folder
+/public
+# ignore script shell to run
+/run_server.sh
+# ignore node_modules
+/node_modules
+# ignore certificate
+/certificate
+
 # Logs
 logs
 *.log
