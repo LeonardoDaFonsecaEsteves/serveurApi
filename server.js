@@ -10,25 +10,17 @@ const routes = require('./router/router');
 const winston = require('./config/winston');
 const morgan = require('morgan');
 const fs = require('fs');
+const cors = require('cors');
 
 const key = fs.readFileSync(path.join(__dirname, 'certificate', 'server.key'));
 const cert = fs.readFileSync(path.join(__dirname, 'certificate', 'server.cert'));
 
+app.use(cors());
 app.use(morgan('combined', {stream: winston.stream}));
 app.use(compression());
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
-// CORS middleware
-const allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', '*');
-  next();
-};
-
-app.use(allowCrossDomain);
 
 app.use((req, _, next) => {
   if (!req.originalUrl.includes('images')) {
@@ -37,7 +29,6 @@ app.use((req, _, next) => {
   next();
 });
 
-routes(app);
 // error handler
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
@@ -50,6 +41,8 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+routes(app);
 
 https
     .createServer(
