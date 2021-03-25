@@ -11,6 +11,17 @@ const options = {
     maxsize: 5242880, // 5MB
     maxFiles: 5,
     colorize: true,
+    format: winston.format.json(),
+  },
+  fileWarn: {
+    level: 'warn',
+    filename: `${appRoot}/logs/log-warn.log`,
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880, // 5MB
+    maxFiles: 5,
+    colorize: true,
+    format: winston.format.json(),
   },
   fileError: {
     level: 'error',
@@ -20,12 +31,17 @@ const options = {
     maxsize: 5242880, // 5MB
     maxFiles: 5,
     colorize: true,
+    format: winston.format.json(),
   },
   console: {
-    level: 'debug',
+    level: 'info',
     handleExceptions: true,
     json: true,
     colorize: true,
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple(),
+    ),
   },
 };
 
@@ -33,6 +49,7 @@ const options = {
 const logger = new winston.createLogger({
   transports: [
     new winston.transports.File(options.fileError),
+    new winston.transports.File(options.fileWarn),
     new winston.transports.File(options.fileInfo),
     new winston.transports.Console(options.console),
   ],

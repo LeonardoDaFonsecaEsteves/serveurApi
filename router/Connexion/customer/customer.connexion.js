@@ -1,4 +1,4 @@
-const {mysqlConnect} = require('../../../config/mysql');
+const {mysqlConnect} = require('../../../mysql/mysql');
 const winston = require('../../../config/winston');
 const {dbConfigConnexion} = require('../config/dbConfig');
 

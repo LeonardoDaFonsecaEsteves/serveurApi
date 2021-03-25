@@ -1,10 +1,9 @@
 #!/bin/bash
+strErr=/logs/log-error; 
+strInfo=/logs/log-info; 
 
-Err=./logs/log-error; 
-Info=./logs/log-info; 
-
-tar -cvf ${Err}-$(date +%F'-'%T).tar ${Err}.log 
-tar -cvf ${Info}-$(date +%F'-'%T).tar ${Info}.log 
+tar -cvf ${strErr}.log ${strErr}-$(date +%F'-'%T).tar  
+tar -cvf ${strInfo}.log ${strInfo}-$(date +%F'-'%T).tar 
 
 nodemon ./server.js
 

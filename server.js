@@ -1,15 +1,18 @@
 require('dotenv').config();
 const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const app = express();
-const https = require('https');
 const PORT = process.env.PORT_API;
-const compression = require('compression');
-const routes = require('./router/router');
-const winston = require('./config/winston');
-const morgan = require('morgan');
+const https = require('https');
+const app = express();
+const path = require('path');
 const fs = require('fs');
+
+const winston = require('./config/winston');
+const routes = require('./router/router');
+const errorHandler = require('./errorHandler/errorHandler');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+
+const morgan = require('morgan');
 const cors = require('cors');
 
 const key = fs.readFileSync(path.join(__dirname, 'certificate', 'server.key'));
@@ -21,27 +24,7 @@ app.use(compression());
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
-app.use((req, _, next) => {
-  if (!req.originalUrl.includes('images')) {
-    winston.info(`${req.ip} - ${req.method}  -  ${req.originalUrl}`);
-  }
-  next();
-});
-
-// error handler
-app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  winston.error(
-      `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
-        req.method
-      } - ${req.ip}`,
-  );
-  res.status(err.status || 500);
-  res.render('error');
-});
-
+errorHandler(app);
 routes(app);
 
 https
