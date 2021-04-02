@@ -3,7 +3,7 @@ const winston = require('../config/winston');
 module.exports = (app) => {
   app.use((req, _, next) => {
     if (!req.originalUrl.includes('images')) {
-      winston.warn(`${req.ip} - ${req.method}  -  ${req.originalUrl}`);
+      winston.info(`${req.ip} - ${req.method}  -  ${req.originalUrl}`);
     }
     next();
   });

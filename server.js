@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
 
 app.use(inspectRequest)
 app.use(RejectRequeste)
-//app.use(bruteForce);
+app.use('/api',  bruteForce);
 app.use(express.static('public'));
 app.disable('x-powered-by');
 app.use(morgan('combined', { stream: winston.stream }));
