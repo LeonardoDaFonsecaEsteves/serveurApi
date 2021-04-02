@@ -14,7 +14,7 @@ exports.create = (req, res) => {
   name = name.replace(/[^A-Z0-9]+/gi, '-') + '.jpg';
   // Create a CustomerLivres
   const customer = new CustomerLivre({
-    imagesUrl: `${process.env.URL_IMAGES}/${collection}/${name}`,
+    imagesUrl: `${collection}/${name}`,
     titre: titre,
     possede: possede,
     collection: collection,

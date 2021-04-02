@@ -1,0 +1,16 @@
+@import './variable.scss';
+@import "~bootstrap/scss/bootstrap";
+@import './Login.scss';
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-size: clamp(18px, 4vw, 22px);
+}
+
+#root {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}

@@ -1,6 +1,6 @@
 const {mysqlConnect} = require('../../../mysql/mysql');
 const {dbConfigRaquel} = require('../config/dbConfig');
-const winston = require('../../../config/winston');
+const logger = require('../../../config/winston');
 const sql = mysqlConnect(dbConfigRaquel);
 
 class CustomerCollection {
@@ -14,15 +14,10 @@ class CustomerCollection {
         newcollection,
         (err, res) => {
           if (err) {
-            winston.error(err);
+            logger.error(JSON.stringify(err));
             result(err, null);
             return;
           }
-
-          winston.info('created collection: ', {
-            id: res.insertId,
-            ...newcollection,
-          });
           result(null, {id: res.insertId, ...newcollection});
         },
     );
@@ -32,13 +27,12 @@ class CustomerCollection {
         `SELECT * FROM collection WHERE id = ${collectionId}`,
         (err, res) => {
           if (err) {
-            winston.error(err);
+            logger.error(JSON.stringify(err));
             result(err, null);
             return;
           }
 
           if (res.length) {
-            winston.info('found collection: ', res[0]);
             result(null, res[0]);
             return;
           }
@@ -51,12 +45,10 @@ class CustomerCollection {
   static getAll(result) {
     sql.query('SELECT * FROM collection', (err, res) => {
       if (err) {
-        winston.error(err);
+        logger.error(JSON.stringify(err));
         result(null, err);
         return;
       }
-
-      winston.info('collection: ', res);
       result(null, res);
     });
   }
@@ -66,7 +58,7 @@ class CustomerCollection {
         [customerCollection.collectionName, collectionId],
         (err, res) => {
           if (err) {
-            winston.error(err);
+            logger.error(JSON.stringify(err));
             result(null, err);
             return;
           }
@@ -76,11 +68,6 @@ class CustomerCollection {
             result({kind: 'not_found'}, null);
             return;
           }
-
-          winston.info('updated customerCollection: ', {
-            id: id,
-            ...customerCollection,
-          });
           result(null, {id: id, ...customerCollection});
         },
     );
@@ -88,7 +75,7 @@ class CustomerCollection {
   static remove(id, result) {
     sql.query('DELETE FROM collection WHERE id = ?', id, (err, res) => {
       if (err) {
-        winston.error(err);
+        logger.error(JSON.stringify(err));
         result(null, err);
         return;
       }
@@ -98,20 +85,16 @@ class CustomerCollection {
         result({kind: 'not_found'}, null);
         return;
       }
-
-      winston.info('deleted customerCollection with id: ', id);
       result(null, res);
     });
   }
   static removeAll(result) {
     sql.query('DELETE FROM collection', (err, res) => {
       if (err) {
-        winston.error(err);
+        logger.error(JSON.stringify(err));
         result(null, err);
         return;
       }
-
-      winston.info(`deleted ${res.affectedRows} collection`);
       result(null, res);
     });
   }

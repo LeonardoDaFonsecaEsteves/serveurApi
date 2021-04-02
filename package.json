@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \" npm start \" \" npm run dev:lcdr \" ",
+    "dev:lcdr": "cd client/les-collections-de-raquel && npm start",
     "start": "./run_server.sh",
     "lint:fix": "eslint \"**/*.js\" --fix",
     "lint": "eslint \"**/*.js\"",
@@ -47,12 +49,15 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
+    "concurrently": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint": "^7.19.0",
     "eslint-config-google": "^0.14.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
+    "express-useragent": "^1.0.15",
     "git-precommit-checks": "^3.0.6",
     "husky": "^4.3.8",
     "jsonwebtoken": "^8.5.1",
@@ -62,6 +67,8 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
+    "request-ip": "^2.1.3",
     "winston": "^3.3.3"
-  }
+  },
+  "devDependencies": {}
 }
