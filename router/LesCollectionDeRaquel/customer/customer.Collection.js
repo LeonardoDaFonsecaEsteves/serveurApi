@@ -1,5 +1,5 @@
-const {mysqlConnect} = require('../../../mysql/mysql');
-const {dbConfigRaquel} = require('../config/dbConfig');
+const { mysqlConnect } = require('../../../mysql/mysql');
+const { dbConfigRaquel } = require('../config/dbConfig');
 const logger = require('../../../config/winston');
 const sql = mysqlConnect(dbConfigRaquel);
 
@@ -10,86 +10,20 @@ class CustomerCollection {
   }
   static create(newcollection, result) {
     sql.query(
-        'INSERT IGNORE INTO collection SET ?',
-        newcollection,
-        (err, res) => {
-          if (err) {
-            logger.error(JSON.stringify(err));
-            result(err, null);
-            return;
-          }
-          result(null, {id: res.insertId, ...newcollection});
-        },
-    );
-  }
-  static findById(collectionId, result) {
-    sql.query(
-        `SELECT * FROM collection WHERE id = ${collectionId}`,
-        (err, res) => {
-          if (err) {
-            logger.error(JSON.stringify(err));
-            result(err, null);
-            return;
-          }
-
-          if (res.length) {
-            result(null, res[0]);
-            return;
-          }
-
-          // not found CustomerCollection with the id
-          result({kind: 'not_found'}, null);
-        },
+      'INSERT IGNORE INTO collection SET ?',
+      newcollection,
+      (err, res) => {
+        if (err) {
+          logger.error(JSON.stringify(err));
+          result(err, null);
+          return;
+        }
+        result(null, { id: res.insertId, ...newcollection });
+      },
     );
   }
   static getAll(result) {
     sql.query('SELECT * FROM collection', (err, res) => {
-      if (err) {
-        logger.error(JSON.stringify(err));
-        result(null, err);
-        return;
-      }
-      result(null, res);
-    });
-  }
-  static updateById(id, customerCollection, result) {
-    sql.query(
-        'UPDATE collection SET collectionName = ?, WHERE collectionId = ?',
-        [customerCollection.collectionName, collectionId],
-        (err, res) => {
-          if (err) {
-            logger.error(JSON.stringify(err));
-            result(null, err);
-            return;
-          }
-
-          if (res.affectedRows == 0) {
-            // not found CustomerCollection with the id
-            result({kind: 'not_found'}, null);
-            return;
-          }
-          result(null, {id: id, ...customerCollection});
-        },
-    );
-  }
-  static remove(id, result) {
-    sql.query('DELETE FROM collection WHERE id = ?', id, (err, res) => {
-      if (err) {
-        logger.error(JSON.stringify(err));
-        result(null, err);
-        return;
-      }
-
-      if (res.affectedRows == 0) {
-        // not found CustomerCollection with the id
-        result({kind: 'not_found'}, null);
-        return;
-      }
-      result(null, res);
-    });
-  }
-  static removeAll(result) {
-    sql.query('DELETE FROM collection', (err, res) => {
       if (err) {
         logger.error(JSON.stringify(err));
         result(null, err);

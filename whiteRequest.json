@@ -1,14 +1,11 @@
 [
-    "/LesCollectionsDeRaquel",
-    "/MesApks",
-    "/api/lcdr/livres",
-    "/api/lcdr/collections",
-    "/api/MesApks/",
-    "/api/upload_images",
-    "/api/connexion",
-    "/favicon",
-    "/static",
-    "/static",
-    "/static",
-    "/images"
+    "LesCollectionsDeRaquel",
+    "undefined",
+    "MesApks",
+    "api",
+    "favicon",
+    "static",
+    "images",
+    "upload_images",
+    "IPTV"
 ]

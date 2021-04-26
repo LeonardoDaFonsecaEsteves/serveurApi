@@ -21,10 +21,10 @@ const App = () => {
             state.map(({ name, path, version, id ,description}) => {
               return (
                 <Card key={id} className="text-center">
-                  <Card.Header as="h5">{name} </Card.Header>
+                  <Card.Header as="h5">{name}</Card.Header>
                   <Card.Body>
                     <Card.Text>{description}</Card.Text>
-                    <Button variant="primary" action download href={`http://dafonseca.freeboxos.fr:8081/apks${path}`}>Télécharger l'application</Button>
+                    <Button variant="primary" download href={`http://dafonseca.freeboxos.fr:8081/apks${path}`}>Télécharger l'application</Button>
                   </Card.Body>
                   <Card.Footer className="text-muted">version de l'application {version}</Card.Footer>
                 </Card>

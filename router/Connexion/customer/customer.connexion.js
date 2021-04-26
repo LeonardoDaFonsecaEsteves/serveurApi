@@ -17,7 +17,7 @@ class CustomerConnexion {
         return;
       }
 
-      winston.info('created collection: ', {
+      winston.info('created newUsers: ', {
         id: res.insertId,
         ...newUsers,
       });
@@ -36,7 +36,7 @@ class CustomerConnexion {
             return;
           }
           if (res.length) {
-            winston.info('found livre: ', res[0]);
+            winston.info('found users: ', res[0]);
             result(null, res[0]);
             return;
           }

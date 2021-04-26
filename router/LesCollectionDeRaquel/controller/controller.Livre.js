@@ -8,13 +8,12 @@ exports.create = (req, res) => {
       message: 'Content can not be empty!',
     });
   }
-  const {collection, titre, possede} = req.body;
-  console.log(req.body);
+  const { collection, titre, possede } = req.body;
   let name = titre;
   name = name.replace(/[^A-Z0-9]+/gi, '-') + '.jpg';
   // Create a CustomerLivres
   const customer = new CustomerLivre({
-    imagesUrl: `${collection}/${name}`,
+    imagesUrl: `images/${name}`,
     titre: titre,
     possede: possede,
     collection: collection,
@@ -25,8 +24,8 @@ exports.create = (req, res) => {
     if (err) {
       res.status(500).send({
         message:
-                    err.message ||
-                    'Some error occurred while creating the livres.',
+          err.message ||
+          'Some error occurred while creating the livres.',
       });
     } else res.send(data);
   });
@@ -38,27 +37,9 @@ exports.findAll = (req, res) => {
     if (err) {
       res.status(500).send({
         message:
-                    err.message ||
-                    'Some error occurred while retrieving livres.',
+          err.message ||
+          'Some error occurred while retrieving livres.',
       });
-    } else res.send(data);
-  });
-};
-
-// Find a single Livre with a LivreId
-exports.findOne = (req, res) => {
-  CustomerLivre.findById(req.params.livreId, (err, data) => {
-    if (err) {
-      if (err.kind === 'not_found') {
-        res.status(404).send({
-          message: `Not found livres with id ${req.params.livreId}.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-                        'Error retrieving livres with id ' + req.params.livreId,
-        });
-      }
     } else res.send(data);
   });
 };
@@ -72,23 +53,23 @@ exports.update = (req, res) => {
     });
   }
   CustomerLivre.updateById(
-      req.params.livreId,
-      new CustomerLivre(req.body),
-      (err, data) => {
-        if (err) {
-          if (err.kind === 'not_found') {
-            res.status(404).send({
-              message: `Not found livres with id ${req.params.livreId}.`,
-            });
-          } else {
-            res.status(500).send({
-              message:
-                            'Error updating livres with id ' +
-                            req.params.livreId,
-            });
-          }
-        } else res.send(data);
-      },
+    req.params.livreId,
+    new CustomerLivre(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === 'not_found') {
+          res.status(404).send({
+            message: `Not found livres with id ${req.params.livreId}.`,
+          });
+        } else {
+          res.status(500).send({
+            message:
+              'Error updating livres with id ' +
+              req.params.livreId,
+          });
+        }
+      } else res.send(data);
+    },
   );
 };
 
@@ -103,22 +84,10 @@ exports.delete = (req, res) => {
       } else {
         res.status(500).send({
           message:
-                        'Could not delete livres with id ' + req.params.livreId,
+            'Could not delete livres with id ' + req.params.livreId,
         });
       }
-    } else res.send({message: 'livres was deleted successfully!'});
+    } else res.send({ message: 'livres was deleted successfully!' });
   });
 };
 
-// Delete all Livre from the database.
-exports.deleteAll = (req, res) => {
-  CustomerLivre.removeAll((err, data) => {
-    if (err) {
-      res.status(500).send({
-        message:
-                    err.message ||
-                    'Some error occurred while removing all livres.',
-      });
-    } else res.send({message: 'All livres were deleted successfully!'});
-  });
-};

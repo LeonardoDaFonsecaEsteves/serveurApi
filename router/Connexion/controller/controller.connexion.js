@@ -13,7 +13,7 @@ exports.create = (req, res) => {
     });
   }
 
-  const {email, mdp} = req.body;
+  const { email, mdp } = req.body;
   // Create a CustomerUsers
   const customer = new CustomerConnexion({
     email,
@@ -25,8 +25,8 @@ exports.create = (req, res) => {
     if (err) {
       res.status(500).send({
         message:
-                    err.message ||
-                    'Some error occurred while creating the users.',
+          err.message ||
+          'Some error occurred while creating the users.',
       });
     } else res.send(data);
   });
@@ -35,8 +35,7 @@ exports.create = (req, res) => {
 // Find a single users with a email
 exports.findOne = (req, res) => {
   CustomerConnexion.findByEmail(req.body, (err, data) => {
-    const {email, mdp} = req.body;
-    console.log(req.body);
+    const { email, mdp } = req.body;
     if (err) {
       if (err.kind === 'not_found') {
         res.status(500).send(`Not found users with ${email}.`);
@@ -50,13 +49,13 @@ exports.findOne = (req, res) => {
         if (response) {
           const expireIn = 24 * 60 * 60;
           const token = jwt.sign(
-              {
-                user: data,
-              },
-              SECRET_KEY,
-              {
-                expiresIn: expireIn,
-              },
+            {
+              user: data,
+            },
+            SECRET_KEY,
+            {
+              expiresIn: expireIn,
+            },
           );
           res.setHeader('Authorization', 'Bearer ' + token);
           return res.status(200).json(token);

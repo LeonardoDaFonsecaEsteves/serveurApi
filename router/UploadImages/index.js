@@ -16,7 +16,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, false);
   }
 };
-const upload = multer({storage: storage, fileFilter: fileFilter});
+const upload = multer({ storage: storage });
 
 module.exports = (app) => {
   // route pour la gestion des images

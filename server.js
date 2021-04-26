@@ -7,13 +7,10 @@ const path = require("path");
 const winston = require('./config/winston');
 const routes = require('./router/router');
 const errorHandler = require('./errorHandler/errorHandler');
-const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
 const { inspectRequest } = require('./middleware/inspect.middleware');
 const { bruteForce } = require('./middleware/bruteForce.middleware');
-const { RejectRequeste } = require('./middleware/rejectRequest.middleware');
-
 
 
 //Définition des CORS
@@ -26,33 +23,34 @@ app.use(function (req, res, next) {
 });
 
 app.use(inspectRequest)
-app.use(RejectRequeste)
-app.use('/api',  bruteForce);
+// app.use(bruteForce);
 app.use(express.static('public'));
 app.disable('x-powered-by');
 app.use(morgan('combined', { stream: winston.stream }));
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 /**
  * WebApp Les Collections de Raquel
  */
 app.use(express.static(path.join(__dirname, "/client/les-collections-de-raquel/build")));
 app.get('/LesCollectionsDeRaquel', (req, res) => {
-    res.sendfile(path.join(__dirname, './client/les-collections-de-raquel/build', 'index.html'));
+    res.sendFile(path.join(__dirname, './client/les-collections-de-raquel/build', 'index.html'));
 })
 /**
  * WebAppp Mes Apks
  */
-app.use(express.static(path.join(__dirname, "/client/mes-apks/build")));
-app.get('/MesApks', (req, res) => {
-    res.sendfile(path.join(__dirname, './client/mes-apks/build', 'index.html'));
-})
+// app.use(express.static(path.join(__dirname, "/client/mes-apks/build")));
+// app.get('/MesApks', (req, res) => {
+//     res.sendFile(path.join(__dirname, './client/mes-apks/build', 'index.html'));
+// })
 
 errorHandler(app);
 routes(app);
 
 app.listen(PORT, '0.0.0.0', (req, res) => {
-    winston.info(`Server is running on PORT ${PORT}`);
+    winston.info(`Server is running on PORT ${PORT}`); 
 })
